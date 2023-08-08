@@ -8,7 +8,6 @@ using El_Gogh.Commands;
 using El_Gogh.Database;
 using LiteDB;
 using LiteDB.Async;
-using System.Net.Mail;
 
 namespace El_Gogh
 {
@@ -21,7 +20,6 @@ namespace El_Gogh
 		private async Task init(String token)
 		{
 			database = new LiteDatabaseAsync("ElGogh.db");
-			(await database.GetStorage<string>("Images","Chunks").FindByIdAsync("879047797238812784/585812474113163284/fea2b654-2971-452c-b025-1af8fcaa3a16.png")).SaveAs("out.png");
 			BsonMapper.Global.EmptyStringToNull = false;
 			BsonMapper.Global.TrimWhitespace = false;
 			await ArtDatabaseInitializer.InitializePresets();
