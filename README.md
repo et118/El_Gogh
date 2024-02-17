@@ -17,6 +17,6 @@ This is a Discord bot written in C# using [DSharpPlus](https://dsharpplus.github
 - Remake everything from the ground up (In progress)
 
 ### Images
+![image](https://github.com/et118/El_Gogh/assets/51513175/1569f0bc-b0cb-46d0-90ef-9ca172d55183)
 ![image](https://github.com/et118/El_Gogh/assets/51513175/d34e6f4f-a344-459f-8db1-b92e6f8eeeb3)
 ![image](https://github.com/et118/El_Gogh/assets/51513175/e7f1a317-9eae-40cf-8e18-1c6063949e3b)
-![image](https://github.com/et118/El_Gogh/assets/51513175/1569f0bc-b0cb-46d0-90ef-9ca172d55183)
