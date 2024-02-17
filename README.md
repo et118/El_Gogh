@@ -14,7 +14,7 @@ This is a Discord bot written in C# using [DSharpPlus](https://dsharpplus.github
 - Create - Much more customizable command. More room for details if you know what you are doing
 - Upscale - Upscale and fix details that the AI got wrong
 ### TODO
-- Remake everything from the ground up (In progress)
+- Remake everything from the ground up **(In progress)**
 
 ### Images
 ![image](https://github.com/et118/El_Gogh/assets/51513175/1569f0bc-b0cb-46d0-90ef-9ca172d55183)
