@@ -1,0 +1,210 @@
+{
+  "8": {
+    "inputs": {
+      "samples": [
+        "19",
+        0
+      ],
+      "vae": [
+        "15",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "PreviewImage",
+    "_meta": {
+      "title": "Preview Image"
+    }
+  },
+  "13": {
+    "inputs": {
+      "image": "pasted/image (1).png",
+      "upload": "image"
+    },
+    "class_type": "LoadImage",
+    "_meta": {
+      "title": "Load Image"
+    }
+  },
+  "14": {
+    "inputs": {
+      "ckpt_name": "AnythingXL_xl.safetensors"
+    },
+    "class_type": "ElGoghCheckpointLoaderSimple",
+    "_meta": {
+      "title": "[El Gogh] Load Checkpoint"
+    }
+  },
+  "15": {
+    "inputs": {
+      "vae_name": "sdxl_vae.safetensors"
+    },
+    "class_type": "ElGoghVAELoader",
+    "_meta": {
+      "title": "[El Gogh] Load VAE"
+    }
+  },
+  "16": {
+    "inputs": {
+      "width": 960,
+      "height": 1536,
+      "batch_size": 1
+    },
+    "class_type": "ElGoghEmptyLatentImage",
+    "_meta": {
+      "title": "[El Gogh] Empty Latent Image"
+    }
+  },
+  "17": {
+    "inputs": {
+      "text": "masterpiece, best quality, great quality",
+      "clip": [
+        "25",
+        1
+      ]
+    },
+    "class_type": "ElGoghPositivePrompt",
+    "_meta": {
+      "title": "[El Gogh] Text Encode (Positive Prompt)"
+    }
+  },
+  "18": {
+    "inputs": {
+      "text": "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name",
+      "clip": [
+        "25",
+        1
+      ]
+    },
+    "class_type": "ElGoghNegativePrompt",
+    "_meta": {
+      "title": "[El Gogh] Text Encode (Negative Prompt)"
+    }
+  },
+  "19": {
+    "inputs": {
+      "add_noise": "enable",
+      "noise_seed": 1065738092705611,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "start_at_step": 0,
+      "end_at_step": 10000,
+      "return_with_leftover_noise": "disable",
+      "model": [
+        "25",
+        0
+      ],
+      "positive": [
+        "17",
+        0
+      ],
+      "negative": [
+        "18",
+        0
+      ],
+      "latent_image": [
+        "16",
+        0
+      ]
+    },
+    "class_type": "ElGoghKSamplerAdvanced",
+    "_meta": {
+      "title": "[El Gogh] KSampler (Advanced)"
+    }
+  },
+  "23": {
+    "inputs": {
+      "lora_name": "GachaSplash4.safetensors",
+      "strength_model": 0,
+      "strength_clip": 0,
+      "model": [
+        "14",
+        0
+      ],
+      "clip": [
+        "14",
+        1
+      ]
+    },
+    "class_type": "ElGoghPrimaryLoraLoader",
+    "_meta": {
+      "title": "[El Gogh] Primary Load Lora"
+    }
+  },
+  "24": {
+    "inputs": {
+      "lora_name": "GachaSplash4.safetensors",
+      "strength_model": 0,
+      "strength_clip": 0,
+      "model": [
+        "23",
+        0
+      ],
+      "clip": [
+        "23",
+        1
+      ]
+    },
+    "class_type": "ElGoghSecondaryLoraLoader",
+    "_meta": {
+      "title": "[El Gogh] Secondary Load Lora"
+    }
+  },
+  "25": {
+    "inputs": {
+      "lora_name": "GachaSplash4.safetensors",
+      "strength_model": 0,
+      "strength_clip": 0,
+      "model": [
+        "24",
+        0
+      ],
+      "clip": [
+        "24",
+        1
+      ]
+    },
+    "class_type": "ElGoghTertiaryLoraLoader",
+    "_meta": {
+      "title": "[El Gogh] Tertiary Load Lora"
+    }
+  },
+  "27": {
+    "inputs": {
+      "sensitivity": 0.5,
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "Safety Checker",
+    "_meta": {
+      "title": "Safety Checker"
+    }
+  },
+  "39": {
+    "inputs": {
+      "nsfw": [
+        "27",
+        1
+      ]
+    },
+    "class_type": "ElGoghSendWebsocketNSFWBool",
+    "_meta": {
+      "title": "[El Gogh] Send Websocket NSFW Bool"
+    }
+  }
+}

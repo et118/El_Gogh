@@ -1,0 +1,21 @@
+TensorRT ComfyUI https://github.com/comfyanonymous/ComfyUI_TensorRT
+Turbo versions
+Expand prompt using Llama locally
+(dpmpp 2m karras)
+Add Clip-Skip modified
+Control Lora Strength
+Censoring
+
+1. One-Shot images that take long processing time
+
+
+
+
+2. Current image generations
+-> A lot of simple small workflows to quickly generate images
+-> Specialized workflow for each and every model (to customize settings better)
+-> 
+
+
+
+3. Lots of Context Menu commands to upscale/modify/change aspects of already generated images
