@@ -81,7 +81,7 @@
   },
   "18": {
     "inputs": {
-      "text": "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name",
+      "text": "(nsfw, explicit, sensitive, naked, nude, horny, porn, hentai), lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name",
       "clip": [
         "25",
         1
@@ -95,7 +95,7 @@
   "19": {
     "inputs": {
       "add_noise": "enable",
-      "noise_seed": 1065738092705611,
+      "noise_seed": 991341576159454,
       "steps": 20,
       "cfg": 7,
       "sampler_name": "euler_ancestral",
@@ -184,7 +184,7 @@
   },
   "27": {
     "inputs": {
-      "sensitivity": 0.5,
+      "sensitivity": 0.7000000000000001,
       "images": [
         "8",
         0
