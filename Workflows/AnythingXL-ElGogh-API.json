@@ -81,7 +81,7 @@
   },
   "18": {
     "inputs": {
-      "text": "(nsfw, explicit, sensitive, naked, nude, horny, porn, hentai), lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name",
+      "text": "explicit, lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name",
       "clip": [
         "25",
         1
