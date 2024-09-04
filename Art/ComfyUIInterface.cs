@@ -56,12 +56,17 @@ namespace ElGogh.Art
 		{
 			HttpResponseMessage response = await httpClient.GetAsync($"http://{serverAddress}/queue");
 			BsonDocument json = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
+
 			if (json["queue_running"].AsArray.Count == 0 && json["queue_pending"].AsArray.Count == 0) return "Workflow not in queue";
+			Console.WriteLine("2");
 			if (json["queue_running"][0][1].AsString == requestId)
 			{
+				Console.WriteLine("3");
 				if (activeNodeId == 0) { return "Initializing"; }
+				Console.WriteLine("4");
 				string message = $"Node: {json["queue_running"][0][2][activeNodeId.ToString()]["class_type"].AsString}";
-				if(activeNodeProgress != -1)
+				Console.WriteLine("5");
+				if (activeNodeProgress != -1)
 				{
 					message += $" {Math.Round(activeNodeProgress * 100, 2)}%";
 					message += "\n```";
@@ -75,16 +80,23 @@ namespace ElGogh.Art
 					}
 					message += $"```";
 				}
+				Console.WriteLine("6");
 				return message;
 			}
+			Console.WriteLine("7");
 			foreach (BsonValue item in json["queue_pending"].AsArray)
 			{
-				if(item.AsArray.Count == 0) continue;
+				Console.WriteLine("8");
+				if (item.AsArray.Count == 0) continue;
+				Console.WriteLine("9");
 				if (item[1].AsString == requestId)
 				{
+					Console.WriteLine("10");
 					return $"In Queue: {json["queue_pending"].AsArray.IndexOf(item)} remaining";
 				}
+				Console.WriteLine("11");
 			}
+			Console.WriteLine("12");
 			return "";
 		}
 

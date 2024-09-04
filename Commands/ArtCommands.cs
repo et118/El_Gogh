@@ -86,7 +86,7 @@ namespace ElGogh.Commands
 		}
 
 		/*[ContextMenu(DSharpPlus.ApplicationCommandType.MessageContextMenu, "Test")]
-		public async Task testing(ContextMenuContext ctx)
+		public async Task testing(ContextMenuContext ctx) //Dont do face fix when resolution is above 2.5k
 		{
 			InteractivityExtension interactivity = ctx.Client.GetInteractivity();
 			await ctx.CreateResponseAsync(DSharpPlus.InteractionResponseType.Modal, new DiscordInteractionResponseBuilder().WithTitle("Test").WithCustomId("registerModal").AddComponents(new TextInputComponent("Label", "customId")));
