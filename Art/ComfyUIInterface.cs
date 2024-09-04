@@ -17,9 +17,10 @@ namespace ElGogh.Art
 		 * queue
 		 * system_stats
 		 * */
+		public static string serverAddress = "localhost:8188";
 		private static string clientId { get; } = Guid.NewGuid().ToString();
 		private static HttpClient httpClient = new HttpClient() { Timeout = Timeout.InfiniteTimeSpan };
-		private static WebsocketClient websocketClient = new WebsocketClient(new Uri($"ws://localhost:8188/ws?clientId={clientId}"));
+		private static WebsocketClient websocketClient;
 
 		public static int queue = 0;
 		public static string activeRequestId = "";
@@ -30,7 +31,7 @@ namespace ElGogh.Art
 
 		public static async Task<List<string>> RequestLoras()
 		{
-			HttpResponseMessage response = await httpClient.GetAsync("http://localhost:8188/object_info/LoraLoader");
+			HttpResponseMessage response = await httpClient.GetAsync($"http://{serverAddress}/object_info/LoraLoader");
 			BsonDocument json = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
 			List<string> loras = new List<string>();
 			foreach(BsonValue lora in json["LoraLoader"]["input"]["required"]["lora_name"][0].AsArray)
@@ -41,7 +42,7 @@ namespace ElGogh.Art
 		}
 		public static async Task<List<string>> RequestVAEs()
 		{
-			HttpResponseMessage response = await httpClient.GetAsync("http://localhost:8188/object_info/VAELoader");
+			HttpResponseMessage response = await httpClient.GetAsync($"http://{serverAddress}/object_info/VAELoader");
 			BsonDocument json = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
 			List<string> vaes = new List<string>();
 			foreach (BsonValue vae in json["VAELoader"]["input"]["required"]["vae_name"][0].AsArray)
@@ -53,12 +54,12 @@ namespace ElGogh.Art
 
 		public static async Task<String> RequestProgress(string requestId)
 		{
-			HttpResponseMessage response = await httpClient.GetAsync("http://localhost:8188/queue");
+			HttpResponseMessage response = await httpClient.GetAsync($"http://{serverAddress}/queue");
 			BsonDocument json = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
 			if (json["queue_running"].AsArray.Count == 0 && json["queue_pending"].AsArray.Count == 0) return "Workflow not in queue";
 			if (json["queue_running"][0][1].AsString == requestId)
 			{
-				if(activeNodeId == 0) { return "Initializing"; }
+				if (activeNodeId == 0) { return "Initializing"; }
 				string message = $"Node: {json["queue_running"][0][2][activeNodeId.ToString()]["class_type"].AsString}";
 				if(activeNodeProgress != -1)
 				{
@@ -95,15 +96,16 @@ namespace ElGogh.Art
 		/// <returns>bool nsfw</returns>
 		public static async Task<string> ProcessWorkflow(Dictionary<string, Node> workflow)
 		{
-			if (!websocketClient.IsRunning)
+			if (websocketClient == null || !websocketClient.IsRunning)
 			{
+				websocketClient = new WebsocketClient(new Uri($"ws://{serverAddress}/ws?clientId={clientId}"));
 				await websocketClient.Start();
 				websocketClient.MessageReceived
 					.Where(msg => msg.MessageType == System.Net.WebSockets.WebSocketMessageType.Text)
 					.Subscribe(async message => await HandleWebsocketMessage(message));
 				websocketClient.DisconnectionHappened.Subscribe(message => throw new Exception("ComfyUI server connection failed. Try again later"));
 			}
-			HttpResponseMessage response = await httpClient.PostAsync("http://localhost:8188/prompt",  CreateJSON(workflow) );
+			HttpResponseMessage response = await httpClient.PostAsync($"http://{serverAddress}/prompt",  CreateJSON(workflow) );
 			BsonDocument responseJson = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
 			//if (responseJson["node_errors"].AsDocument.Keys.Count > 0) throw new Exception(responseJson["node_errors"].ToString()); //TODO figure out this so it doesnt crash
 			return responseJson["prompt_id"].AsString;
@@ -141,7 +143,7 @@ namespace ElGogh.Art
 		{
 			foreach (BsonValue image in images)
 			{
-				HttpResponseMessage message = await httpClient.GetAsync($"http://localhost:8188/view?filename={image["filename"].AsString}&subfolder={image["subfolder"].AsString}&type={image["type"].AsString}");
+				HttpResponseMessage message = await httpClient.GetAsync($"http://{serverAddress}/view?filename={image["filename"].AsString}&subfolder={image["subfolder"].AsString}&type={image["type"].AsString}");
 				if(message.StatusCode != System.Net.HttpStatusCode.OK) throw new Exception("Image not found");
 				await Bot.database.GetStorage<string>("TempImages", "TempChunks").UploadAsync(imageIdentifier + "/" + image["filename"].AsString, image["filename"].AsString, await message.Content.ReadAsStreamAsync(), metadata: BsonMapper.Global.ToDocument(new ImageMetadata() { nsfw=nsfw }));
 				activeRequestId = "";

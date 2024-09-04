@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using ElGogh.Art;
+using System.Diagnostics;
 
 namespace ElGogh
 {
@@ -7,30 +8,37 @@ namespace ElGogh
 		public static Process comfyUIProcess;
 		static void Main(string[] args)
 		{
-			if (args.Length < 2) {
+			if (args.Length < 2 || args.Contains("--help") || args.Contains("-help")) {
 				Console.Error.WriteLine("Invalid arguments provided");
-				Console.Error.WriteLine(
-					"""
-					Usage: 
-						./ElGogh <Path to ComfyUI Launch Script> <Discord Bot Token>
+				printHelp();
+				return;
+			}
 
-					Note:
-						To avoid a messy python environment your ComfyUI Launch Script should invoke its own python environment.
-						Create one with "python3 -m venv <name of environment>" and enter the environment using the activate file generated in 
-						"<name of environment>/Scripts"
-					"""
-					);
-				return;
-			}
-			if (!File.Exists(args[0]))
+			if(args.Contains("--server"))
 			{
-				Console.Error.WriteLine($"File \"{args[0]}\" does not exist");
-				return;
+				try
+				{
+					ComfyUIInterface.serverAddress = args[Array.FindIndex(args, argument => argument == "--server") + 1];
+				}
+				catch (Exception e)
+				{
+					printHelp();
+					return;
+				}
 			}
-			//TODO: Install comfyUI custom extension
-			#if !DEBUG
-			startComfyUIProcess(args[0]);
-			#endif
+
+#if !DEBUG
+			if(!args.Contains("--server")) {
+				if (!File.Exists(args[0]))
+				{
+					Console.Error.WriteLine($"File \"{args[0]}\" does not exist");
+					return;
+				}
+				//TODO: Install comfyUI custom extension
+				startComfyUIProcess(args[0]);
+			}
+			
+#endif
 			/* --COMFYUI custom nodes--
 			 * ComfyUI-Manager
 			 * ComfyUI-Impact-Pack
@@ -118,6 +126,24 @@ namespace ElGogh
 				if ((DateTime.Now-dateTime).TotalSeconds > 10) break; //TODO wtf why does only timer work
 			}
 			Console.WriteLine("ComfyUI started");
+		}
+
+		private static void printHelp()
+		{
+			Console.Error.WriteLine(
+					"""
+					Usage: 
+						./ElGogh <Path to ComfyUI Launch Script> <Discord Bot Token> <optional arguments>
+
+					Optional Arguments:
+						--server <ip:port>  Specifies a custom ComfyUI server ip and port. Will not use launch script if specified. Default: localhost:8188
+
+					Note:
+						To avoid a messy python environment your ComfyUI Launch Script should invoke its own python environment.
+						Create one with "python3 -m venv <name of environment>" and enter the environment using the activate file generated in 
+						"<name of environment>/Scripts"
+					"""
+					);
 		}
 	}
 }
