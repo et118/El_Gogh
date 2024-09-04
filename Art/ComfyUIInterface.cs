@@ -56,7 +56,7 @@ namespace ElGogh.Art
 		{
 			HttpResponseMessage response = await httpClient.GetAsync($"http://{serverAddress}/queue");
 			BsonDocument json = JsonSerializer.Deserialize(await response.Content.ReadAsStringAsync()).AsDocument;
-
+			Console.WriteLine("1");
 			if (json["queue_running"].AsArray.Count == 0 && json["queue_pending"].AsArray.Count == 0) return "Workflow not in queue";
 			Console.WriteLine("2");
 			if (json["queue_running"][0][1].AsString == requestId)
